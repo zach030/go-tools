@@ -33,9 +33,3 @@ func main(){
 
 }
 
-func sliceRise(s []int)  {
-	s = append(s,0)
-	for i, _:= range s {
-		s[i]++
-	}
-}
