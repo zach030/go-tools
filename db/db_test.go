@@ -21,6 +21,12 @@ func TestBurgerDB_Set(t *testing.T) {
 		return
 	}
 
+	err = db.Delete([]byte("age"))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	val, err := db.Get([]byte("name"))
 	if err != nil {
 		fmt.Println(err)

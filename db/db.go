@@ -44,6 +44,9 @@ func (b *BurgerDB) initIndex() {
 			return
 		}
 		b.idx[entry.Key()] = offset
+		if entry.tag == DEL {
+			delete(b.idx, entry.Key())
+		}
 		offset += entry.Size()
 	}
 	return
@@ -68,7 +71,7 @@ func (b *BurgerDB) Get(key []byte) (val []byte, err error) {
 }
 
 func (b *BurgerDB) Set(key, value []byte) error {
-	entry := NewEntry(key, value)
+	entry := NewEntry(key, value, SET)
 	err := b.dbFile.Write(entry)
 	if err != nil {
 		return err
@@ -76,5 +79,18 @@ func (b *BurgerDB) Set(key, value []byte) error {
 	b.lock.Lock()
 	defer b.lock.Unlock()
 	b.idx[string(key)] = b.dbFile.offset
+	return nil
+}
+
+func (b *BurgerDB) Delete(key []byte) error {
+	if _, ok := b.idx[string(key)]; !ok {
+		return nil
+	}
+	entry := NewEntry(key, nil, DEL)
+	err := b.dbFile.Write(entry)
+	if err != nil {
+		return err
+	}
+	delete(b.idx, string(key))
 	return nil
 }
