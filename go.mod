@@ -1,8 +1,3 @@
-module zburger
+module go-tools
 
-go 1.14
-
-require (
-	github.com/boltdb/bolt v1.3.1
-	golang.org/x/sys v0.0.0-20210503173754-0981d6026fa6 // indirect
-)
+go 1.17

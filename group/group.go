@@ -26,6 +26,9 @@ func (g *Group) Run() error {
 		a.interrupt(err)
 	}
 	// wait for all actors to stop
+	for i := 1; i < cap(errors); i++ {
+		<-errors
+	}
 	return err
 }
 
